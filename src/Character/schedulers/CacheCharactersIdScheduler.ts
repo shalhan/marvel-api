@@ -1,27 +1,26 @@
 import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { Cache } from 'cache-manager';
-import { CACHE_ALL_CHARACTERS_ID } from '../constants';
-import { CharacterService } from '../services';
+import { GetAllCharacter } from '../interfaces';
+import { CharacterIntegrationServiceWithCache } from '../services';
 
+// scheduler to fetch all characters id every night
 @Injectable()
 export class CacheCharactersIdScheduler {
   private static isRunning = false;
   constructor(
-    private readonly characterService: CharacterService,
+    @Inject(CharacterIntegrationServiceWithCache)
+    private readonly characterService: GetAllCharacter,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
-  @Cron('0 0 24 * * *')
+  @Cron('30 * * * * *')
   async handleCron() {
     try {
       // only run the getAllCharactersId when there is no process running
       if (!CacheCharactersIdScheduler.isRunning) {
         console.log('Running the CacheCharactersIdScheduler...');
         CacheCharactersIdScheduler.isRunning = true;
-        const result = await this.characterService.getAllCharactersId();
-        await this.cacheManager.set(CACHE_ALL_CHARACTERS_ID, result, {
-          ttl: 86400,
-        });
+        await this.characterService.getAllCharactersId();
         console.log('CacheCharactersIdScheduler has finished');
       } else {
         console.warn(

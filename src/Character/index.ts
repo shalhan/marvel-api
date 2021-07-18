@@ -2,7 +2,7 @@ import * as redisStore from 'cache-manager-redis-store';
 import { CacheModule, Module } from '@nestjs/common';
 import { CommonModule } from '../Common';
 import { CharacterController } from './controllers/CharacterController';
-import { CharacterService } from './services/CharacterService';
+import { CharacterService, CharacterIntegrationService, CharacterIntegrationServiceWithCache } from './services';
 import { CacheCharactersIdScheduler } from './schedulers';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { CacheAllCharactersIdController } from './controllers';
@@ -25,7 +25,7 @@ import { FETCH_ALL_CHARACTERS_ID_CLIENT } from './constants';
     ]),
   ],
   controllers: [CharacterController, CacheAllCharactersIdController],
-  providers: [CharacterService, CacheCharactersIdScheduler],
+  providers: [CharacterService, CharacterIntegrationService, CharacterIntegrationServiceWithCache, CacheCharactersIdScheduler],
   exports: [CacheCharactersIdScheduler],
 })
 export class CharacterModule {}
