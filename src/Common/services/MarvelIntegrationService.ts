@@ -18,8 +18,10 @@ export class MarvelIntegrationService implements ApiGet<MarvelApiResponse> {
   private async callRequest(
     method: string,
     endpoint: string,
+    params: string
   ): Promise<MarvelApiResponse> {
-    const queryParam = `?ts=${this.timestamp}&apikey=${this.publicKey}`;
+    const queryParam = `?ts=${this.timestamp}&apikey=${this.publicKey}&hash=${this.hash}${params}`;
+    console.log(queryParam, 'querysdfpojapsf');
     const response = await this.httpService
       .request<MarvelApiResponse>({
         baseURL: process.env.MARVEL_API_URL,
@@ -29,7 +31,20 @@ export class MarvelIntegrationService implements ApiGet<MarvelApiResponse> {
       .toPromise();
     return response.data;
   }
-  async get(endpoint: string): Promise<MarvelApiResponse> {
-    return this.callRequest('GET', endpoint);
+  async get(endpoint: string, filter?: { limit: number, orderBy: string, offset: number }): Promise<MarvelApiResponse> {
+    console.log(filter, 'filterrrr');
+    let params = '';
+    if (filter) {
+      if (filter.limit != undefined){
+        params += `&limit=${filter.limit}`
+      }
+      if (filter.orderBy != undefined){
+        params += `&orderBy=${filter.orderBy}`
+      }
+      if (filter.offset != undefined){
+        params += `&offset=${filter.offset}`
+      }
+    }
+    return this.callRequest('GET', endpoint, params);
   }
 }
