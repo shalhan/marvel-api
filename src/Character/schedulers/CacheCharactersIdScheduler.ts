@@ -1,6 +1,5 @@
-import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
-import { Cache } from 'cache-manager';
 import { GetAllCharacter } from '../interfaces';
 import { CharacterIntegrationServiceWithCache } from '../services';
 
@@ -11,7 +10,6 @@ export class CacheCharactersIdScheduler {
   constructor(
     @Inject(CharacterIntegrationServiceWithCache)
     private readonly characterService: GetAllCharacter,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
   @Cron('30 * * * * *')
   async handleCron() {

@@ -15,7 +15,7 @@ type GetCharactersResponse = Promise<ApiSuccessResponse<number[]>>;
 export class CharacterController {
   constructor(
     @Inject(CharacterService)
-    private readonly service: GetAllCharacter
+    private readonly service: GetAllCharacter,
   ) {}
   @api.Get('/characters')
   @swagger.ApiOperation({ description: constants.GET_CHARACTERS_API_TITLE })
@@ -23,7 +23,10 @@ export class CharacterController {
     type: ApiSuccessResponse,
     description: constants.GET_CHARACTERS_API_SUCCESS_MESSAGE,
   })
-  @swagger.ApiServiceUnavailableResponse({ description: 'Characters id are not available at the moment. Make sure to run the scheduler'})
+  @swagger.ApiServiceUnavailableResponse({
+    description:
+      'Characters id are not available at the moment. Make sure to run the scheduler',
+  })
   async getCharacters(): GetCharactersResponse {
     const data = await this.service.getAllCharactersId();
     return new ApiSuccessResponse(
