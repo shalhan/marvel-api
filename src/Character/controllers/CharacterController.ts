@@ -9,12 +9,14 @@ import { HttpStatus, Inject, Param } from '@nestjs/common';
 import { GetAllCharacter, GetCharacterById } from '../interfaces';
 import { CharacterIntegrationService } from '../services';
 import { Character } from '../models';
+import { getSchemaPath } from '@nestjs/swagger';
 
 type GetCharactersResponse = Promise<ApiSuccessResponse<number[]>>;
 type GetCharacterByIdResponse = Promise<ApiSuccessResponse<Character>>;
 
 @api.Controller(API_V1)
 @swagger.ApiTags('Character')
+@swagger.ApiExtraModels(ApiSuccessResponse, Character)
 export class CharacterController {
   constructor(
     @Inject(CharacterService)
@@ -25,8 +27,19 @@ export class CharacterController {
   @api.Get('/characters')
   @swagger.ApiOperation({ description: constants.GET_CHARACTERS_API_TITLE })
   @swagger.ApiOkResponse({
-    type: ApiSuccessResponse,
-    description: constants.GET_CHARACTERS_API_SUCCESS_MESSAGE,
+    schema: {
+      allOf: [
+        { $ref: getSchemaPath(ApiSuccessResponse) },
+        {
+          properties: {
+            data: {
+              type: 'array',
+              example: [1,2,3],
+            },
+          },
+        },
+      ],
+    },
   })
   @swagger.ApiServiceUnavailableResponse({
     description:
@@ -44,8 +57,18 @@ export class CharacterController {
   @api.Get('/characters/:id')
   @swagger.ApiOperation({ description: constants.GET_CHARACTERS_API_TITLE })
   @swagger.ApiOkResponse({
-    type: ApiSuccessResponse,
-    description: constants.GET_CHARACTERS_API_SUCCESS_MESSAGE,
+    schema: {
+      allOf: [
+        { $ref: getSchemaPath(ApiSuccessResponse) },
+        {
+          properties: {
+            data: {
+              $ref: getSchemaPath(Character),
+            },
+          },
+        },
+      ],
+    },
   })
   @swagger.ApiNotFoundResponse({
     description: 'Cannot found character with selected id.',

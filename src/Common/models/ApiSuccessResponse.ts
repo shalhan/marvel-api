@@ -7,7 +7,7 @@ export class ApiSuccessResponse<T> {
   private statusCode: number;
   @ApiProperty({ enum: [constants.DEFAULT_API_SUCCESS_MESSAGE] })
   private message: string;
-  @ApiProperty()
+  @ApiProperty({ description: 'Generic data type '})
   private data: T;
   constructor(statusCode: number, message: string, data: T) {
     this.statusCode = statusCode;
