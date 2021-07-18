@@ -21,7 +21,6 @@ export class MarvelIntegrationService implements ApiGet<MarvelApiResponse> {
     params: string,
   ): Promise<MarvelApiResponse> {
     const queryParam = `?ts=${this.timestamp}&apikey=${this.publicKey}&hash=${this.hash}${params}`;
-    console.log(queryParam, 'querysdfpojapsf');
     const response = await this.httpService
       .request<MarvelApiResponse>({
         baseURL: process.env.MARVEL_API_URL,
@@ -35,7 +34,6 @@ export class MarvelIntegrationService implements ApiGet<MarvelApiResponse> {
     endpoint: string,
     filter?: { limit: number; orderBy: string; offset: number },
   ): Promise<MarvelApiResponse> {
-    console.log(filter, 'filterrrr');
     let params = '';
     if (filter) {
       if (filter.limit != undefined) {
