@@ -6,7 +6,7 @@ import { CharacterIntegrationServiceWithCache } from '../services';
 // scheduler to fetch all characters id every night
 @Injectable()
 export class CacheCharactersIdScheduler {
-  private static isRunning = false;
+  public static isRunning = false;
   constructor(
     @Inject(CharacterIntegrationServiceWithCache)
     private readonly characterService: GetAllCharacter,

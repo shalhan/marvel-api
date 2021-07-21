@@ -28,7 +28,7 @@ export class MarvelIntegrationService implements ApiGet<MarvelApiResponse> {
         url: `${endpoint}${queryParam}`,
       })
       .toPromise();
-    return response.data;
+    return response ? response.data : null;
   }
   async get(
     endpoint: string,

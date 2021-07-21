@@ -13,7 +13,9 @@ import { InternalServerErrorException } from '@nestjs/common';
 
 // service to handle all /characters/* api
 @Injectable()
-export class CharacterIntegrationService implements GetAllCharacter, GetCharacterById {
+export class CharacterIntegrationService
+  implements GetAllCharacter, GetCharacterById
+{
   constructor(
     @Inject(MarvelIntegrationService)
     private readonly httpService: ApiGet<MarvelApiResponse>,
@@ -35,7 +37,7 @@ export class CharacterIntegrationService implements GetAllCharacter, GetCharacte
         result.push(...response.data.results);
         offset += limit;
       }
-    } while (response && response.data && response.data.count > 200);
+    } while (response && response.data && response.data.count > 0);
 
     const ids = new CharactersIdApiMapper().map(result);
     return ids;
@@ -46,7 +48,7 @@ export class CharacterIntegrationService implements GetAllCharacter, GetCharacte
       const response = await this.httpService.get(`/characters/${id}`);
       return new CharacterApiMapper().map(response.data.results);
     } catch (err) {
-      if (err.response && err.response.status == HttpStatus.NOT_FOUND) { 
+      if (err.response && err.response.status == HttpStatus.NOT_FOUND) {
         throw new NotFoundException('Cannot found character with selected id.');
       }
       throw new InternalServerErrorException();
