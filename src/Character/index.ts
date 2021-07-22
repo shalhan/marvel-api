@@ -17,14 +17,14 @@ import { FETCH_ALL_CHARACTERS_ID_CLIENT } from './constants';
     CommonModule,
     CacheModule.register({
       store: redisStore,
-      host: 'localhost',
-      port: 6379,
+      host: process.env.REDIS_HOST,
+      port: Number(process.env.REDIS_PORT || 6379),
     }),
     ClientsModule.register([
       {
         name: FETCH_ALL_CHARACTERS_ID_CLIENT,
         transport: Transport.TCP,
-        options: { port: 3210 },
+        options: { port: Number(process.env.EVENT_CONSUMER_PORT || 3200) },
       },
     ]),
   ],

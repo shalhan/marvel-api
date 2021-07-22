@@ -1,8 +1,8 @@
 import { ApiGet } from '../interfaces/ApiGet';
 import { HttpService } from '@nestjs/axios';
-import { MD5 } from '../helpers/encryption';
 import { Injectable } from '@nestjs/common';
 import { MarvelApiResponse } from '../models';
+import { MD5 } from '../helpers';
 
 @Injectable()
 export class MarvelIntegrationService implements ApiGet<MarvelApiResponse> {

@@ -34,7 +34,7 @@ export class CharacterController {
           properties: {
             data: {
               type: 'array',
-              example: [1,2,3],
+              example: [1, 2, 3],
             },
           },
         },

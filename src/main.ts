@@ -11,7 +11,7 @@ async function bootstrap() {
     await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
       transport: Transport.TCP,
       options: {
-        port: 3210,
+        port: Number(process.env.EVENT_CONSUMER_PORT || 3200),
       },
     });
 
@@ -24,6 +24,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
   microservice.listen();
-  await app.listen(3000);
+  await app.listen(process.env.APP_PORT);
 }
 bootstrap();
