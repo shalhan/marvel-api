@@ -134,7 +134,7 @@ To see more on how's the scheduler work, you can see in `src/Character/scheduler
  ### Event Messaging
  I use a simple microservice tools by [Nest.js](https://docs.nestjs.com/microservices/basics). By running the `npm run start:dev`, the listener will run in the background.
  
-Event messaging is used as a backup plan in case the scheduler has some issue. Basically everytime the `GET /characters` is called and there is no cache data, it will return `503 Error` and send an event to the listener and then the listener will fetch all the characters id and store it in redis.
+Event messaging is used as a backup plan in case the scheduler has some issue. Basically everytime the `GET /characters` is called and there is no cache data, it will return `503 Error` and send an event to the listener and then it will fetch all the characters id and store it in redis.
 
 You need to wait for a few minutes before the `GET /characters` can return all the characters id as expected.
 
