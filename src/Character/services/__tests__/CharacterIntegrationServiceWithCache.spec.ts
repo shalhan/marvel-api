@@ -7,13 +7,18 @@ describe('@character.service.CharacterIntegrationServiceWithCache', () => {
   let mockService: jest.Mocked<CharacterIntegrationService>;
   let mockCache: jest.Mocked<Cache>;
   beforeEach(() => {
-    mockService = { getAllCharactersId: jest.fn() } as any;
+    mockService = {
+      getAllCharactersId: jest.fn(),
+      getTotalCharacters: jest.fn(),
+    } as any;
     mockCache = { set: jest.fn(), get: jest.fn() } as any;
     service = new CharacterIntegrationServiceWithCache(mockService, mockCache);
   });
   describe('getAllCharactersId()', () => {
     it('calls mockService.get and mockCache once', async () => {
       mockService.getAllCharactersId.mockResolvedValueOnce([1, 2, 3]);
+      mockService.getTotalCharacters.mockResolvedValue(3);
+      mockCache.get.mockResolvedValueOnce(undefined);
       await service.getAllCharactersId();
       expect(mockService.getAllCharactersId).toHaveBeenCalledTimes(1);
       expect(mockCache.set).toHaveBeenCalledTimes(1);

@@ -1,4 +1,5 @@
 import { CharacterIntegrationServiceWithCache } from 'src/Character/services';
+import { CharacterFetchingProcess } from '../../services/CharacterFetchingProcess';
 import { CacheCharactersIdScheduler } from '../CacheCharactersIdScheduler';
 
 describe('@character.scheduler.CacheCharactersIdScheduler', () => {
@@ -15,8 +16,8 @@ describe('@character.scheduler.CacheCharactersIdScheduler', () => {
 
   it('calls mockService.getAllCharactersId once even if there is multiple process', async () => {
     await service.handleCron();
-    CacheCharactersIdScheduler.isRunning = true;
+    CharacterFetchingProcess.isRunning = true;
     await service.handleCron();
-    expect(mockService.getAllCharactersId).not.toHaveBeenCalled();
+    expect(mockService.getAllCharactersId).toHaveBeenCalledTimes(1);
   });
 });

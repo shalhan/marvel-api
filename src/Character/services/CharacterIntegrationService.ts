@@ -2,7 +2,7 @@ import { ApiGet } from '../../Common/interfaces/ApiGet';
 import { CharactersIdApiMapper, CharacterApiMapper } from '../mappers';
 import { Character } from '../models';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { GetAllCharacter, GetCharacterById } from '../interfaces/';
+import { GetAllCharacterWithTotal, GetCharacterById } from '../interfaces/';
 import {
   MarvelApiPaginationDataResult,
   MarvelApiResponse,
@@ -14,7 +14,7 @@ import { InternalServerErrorException } from '@nestjs/common';
 // service to handle all /characters/* api
 @Injectable()
 export class CharacterIntegrationService
-  implements GetAllCharacter, GetCharacterById
+  implements GetAllCharacterWithTotal, GetCharacterById
 {
   constructor(
     @Inject(MarvelIntegrationService)
@@ -27,6 +27,7 @@ export class CharacterIntegrationService
     let offset = 0;
     const result: MarvelApiPaginationDataResult[] = [];
     let response;
+
     do {
       response = await this.httpService.get('/characters', {
         offset,
@@ -41,6 +42,17 @@ export class CharacterIntegrationService
 
     const ids = new CharactersIdApiMapper().map(result);
     return ids;
+  }
+
+  async getTotalCharacters(): Promise<number> {
+    const limit = 1;
+    const offset = 0;
+    const response = await this.httpService.get('/characters', {
+      offset,
+      limit,
+      orderBy: '-modified',
+    });
+    return response.data.total;
   }
 
   async getCharacterById(id: number): Promise<Character> {

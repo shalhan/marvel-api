@@ -21,6 +21,7 @@ export class MarvelIntegrationService implements ApiGet<MarvelApiResponse> {
     params: string,
   ): Promise<MarvelApiResponse> {
     const queryParam = `?ts=${this.timestamp}&apikey=${this.publicKey}&hash=${this.hash}${params}`;
+    console.log(`Fetching ${endpoint} with ${queryParam}`);
     const response = await this.httpService
       .request<MarvelApiResponse>({
         baseURL: process.env.MARVEL_API_URL,
