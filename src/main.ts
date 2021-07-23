@@ -11,7 +11,7 @@ async function bootstrap() {
     await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
       transport: Transport.TCP,
       options: {
-        port: Number(process.env.EVENT_CONSUMER_PORT || 3200),
+        port: Number(process.env.EVENT_LISTENER_PORT || 3210),
       },
     });
 

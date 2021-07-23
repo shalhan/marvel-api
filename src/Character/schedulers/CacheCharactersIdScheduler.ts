@@ -23,12 +23,11 @@ export class CacheCharactersIdScheduler {
         CharacterFetchingProcess.isRunning = false;
       } else {
         console.warn(
-          'CacheCharactersIdScheduler is still running... skip the process',
+          '[Scheduler] Fetching all characters id is in process... skip this event',
         );
-        CharacterFetchingProcess.isRunning = false;
       }
     } catch (err) {
-      CharacterFetchingProcess.isRunning = true;
+      CharacterFetchingProcess.isRunning = false;
       console.error('Error while CacheCharactersIdScheduler running', err);
     }
   }
